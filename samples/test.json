@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "id": "1234",
+      "name": "Potato",
+      "price": 9,
+      "quantity": 2
+    },
+    {
+      "id": "1234",
+      "name": "Garlic",
+      "price": 10,
+      "quantity": 1
+    },
+    {
+      "id": "1234",
+      "name": "Cucumber",
+      "price": 18,
+      "quantity": 1
+    }
+  ],
+  "total": 46
+}

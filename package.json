@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "path": "^0.12.7",
     "react-scripts": "^3.0.1",
     "uuid": "^3.3.2"
   },
