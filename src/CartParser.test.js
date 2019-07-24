@@ -1,33 +1,36 @@
 import CartParser from "./CartParser";
-import fs from "fs";
+import fs, { readFileSync } from "fs";
 import path from "path";
 
 import v4 from "uuid";
 
 let parser, parse, validate, parseLine;
 jest.mock("uuid");
-jest.mock("fs");
-
-beforeEach(() => {
-  parser = new CartParser();
-  parse = parser.parse.bind(parser);
-  validate = parser.validate.bind(parser);
-  parseLine = parser.parseLine.bind(parser);
-});
-
-beforeAll(() => {
-  v4.mockReturnValue("1234");
-});
+jest.mock("fs", () => ({
+  readFileSync: jest.fn()
+}));
 
 describe("CartParser - unit tests", () => {
+  beforeEach(() => {
+    parser = new CartParser();
+    parse = parser.parse.bind(parser);
+    validate = parser.validate.bind(parser);
+    parseLine = parser.parseLine.bind(parser);
+  });
+
+  beforeAll(() => {
+    v4.mockReturnValue("1234");
+  });
+
   describe("parse", () => {
+    const fs = require("fs");
     it("should throw error if there is an empty row", () => {
       const contents = `Product name,Price,Quantity
 			First product,9.22,2
 			
 			Second product,10.32,5
 			last product,18.90,1`;
-      fs.readFileSync.mockReturnValueOnce(contents);
+      readFileSync.mockReturnValueOnce(contents);
       const result = () => {
         return parse();
       };
@@ -133,13 +136,8 @@ describe("CartParser - integration test", () => {
 		Garlic,10,1
 		Cucumber,18,1`;
 
-    fs.readFileSync.mockReturnValueOnce(contents);
-
-    // Так і не зміг добитися відключення моку для тесту
-
-    // fs.readFileSync.mockImplementationOnce(() => {
-    //   return require.requireActual("fs").readFileSync;
-    // });
+    const actualFn = jest.requireActual("fs").readFileSync;
+    fs.readFileSync.mockImplementationOnce(actualFn);
 
     const result = parse(absPath);
     const expectedResult = {
